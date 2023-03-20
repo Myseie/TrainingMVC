@@ -19,11 +19,46 @@ namespace TrainingMVC.Controllers
         public IActionResult Create(Training training)
         {
              var db = new Database();
-            db = db.SaveTraining(exercise, sets,);
-            var collection = db.GetCollection<Training>();
-            collection.Insertone(training);
+            db.SaveTraining(training);
+            
+           
 
             return Redirect("/Home");
         }
+
+        public IActionResult ShowTraining(Training training)
+        {
+            var db = new Database();
+            db.ShowTraining(training);
+
+            return View(training);
+
+
+        }
+        public IActionResult EditTraining()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditTraining(Training training)
+        {
+            var db = new Database();
+            db.EditTraining(training);
+
+            return Redirect("/Home");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTraining(Training training)
+        {
+            var db = new Database();
+            db.DeleteTraining(training);
+
+            return Redirect("/Home");
+        }
+
+
+
     }
 }

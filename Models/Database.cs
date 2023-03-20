@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -23,7 +24,7 @@ namespace TrainingMVC.Models
             {
                 int id = int.Parse(reader["Id"].ToString());
                 string exercise = reader["Exercise"].ToString();
-                int set = int.Parse(reader["Set"].ToString());
+                int sets = int.Parse(reader["Sets"].ToString());
                 int reps = int.Parse(reader["Reps"].ToString());
                 int weight = int.Parse(reader["Weight"].ToString());
 
@@ -31,7 +32,7 @@ namespace TrainingMVC.Models
                 {
                     Id = id,
                     Exercise = exercise,
-                    Set = set,
+                    Sets = sets,
                     Reps = reps,
                     Weight = weight
                 });
@@ -40,14 +41,45 @@ namespace TrainingMVC.Models
             return training;
 
         }
-        public void SaveTraining(string exercise, int set, int reps, int weight)
+
+        public void ShowTraining(Training training)
+        {
+            SqlCommand cmd = GetDbCommand();
+            cmd.CommandText = $"SELECT Exercise FROM Training";
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public void EditTraining(Training training) 
         {
             SqlCommand cmd = GetDbCommand();
 
-            cmd.CommandText = $"INSERT INTO Training (Exercise, Set, Reps, Weight) VALUES ('{exercise}', {set}, {reps}, {weight})";
+            cmd.CommandText = $"UPDATE * Training(Exercise, Sets, Reps, Weight) VALUES ('{training.Exercise}', {training.Sets}, {training.Reps}, {training.Weight})";
+
+            cmd.ExecuteNonQuery();
+            
+        }
+
+        
+        public void SaveTraining(Training training)
+        {
+            SqlCommand cmd = GetDbCommand();
+
+            cmd.CommandText = $"INSERT INTO Training (Exercise, Sets, Reps, Weight) VALUES ('{training.Exercise}', {training.Sets}, {training.Reps}, {training.Weight})";
             
             cmd.ExecuteNonQuery();
         }
+
+        public void DeleteTraining(Training training)
+        {
+            SqlCommand cmd = GetDbCommand();
+
+            cmd.CommandText = $"DELETE FROM Training";
+            cmd.ExecuteNonQuery();
+
+        }
+
+
 
         private static SqlCommand GetDbCommand()
         {

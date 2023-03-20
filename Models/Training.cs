@@ -6,7 +6,7 @@
 
         public string Exercise { get; set; }
 
-        public int Set { get; set; }
+        public int Sets { get; set; }
 
         public int Reps { get; set; }
 
